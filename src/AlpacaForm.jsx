@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './AlpacaForm.css';
 
 const AlpacaForm = () => {
-  // Initial state for form data
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -12,7 +12,13 @@ const AlpacaForm = () => {
     alpacaColors: []
   });
 
-  // Available alpaca colors
+
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: ''
+  });
+
+
   const alpacaColorOptions = [
     'White', 
     'Brown', 
@@ -22,16 +28,55 @@ const AlpacaForm = () => {
     'Caramel'
   ];
 
-  // Handle input changes for text inputs
+
+  const validateInput = (name, value) => {
+    switch(name) {
+      case 'firstName':
+        // First name must be at least 2 characters long and contain only letters
+        if (value.trim().length < 2) {
+          return 'First name must be at least 2 characters long';
+        }
+        if (!/^[A-Za-z]+$/.test(value.trim())) {
+          return 'First name must contain only letters';
+        }
+        return '';
+      
+      case 'lastName':
+        // Last name must be at least 2 characters long and contain only letters
+        if (value.trim().length < 2) {
+          return 'Last name must be at least 2 characters long';
+        }
+        if (!/^[A-Za-z]+$/.test(value.trim())) {
+          return 'Last name must contain only letters';
+        }
+        return '';
+      
+      default:
+        return '';
+    }
+  };
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    
+    // Validate input
+    const validationError = validateInput(name, value);
+    
+
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
+
+
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [name]: validationError
+    }));
   };
 
-  // Handle checkbox changes for alpaca colors
+
   const handleColorChange = (e) => {
     const { value, checked } = e.target;
     setFormData(prevState => ({
@@ -56,7 +101,11 @@ const AlpacaForm = () => {
             value={formData.firstName}
             onChange={handleInputChange}
             placeholder="Enter first name"
+            className={errors.firstName ? 'input-error' : ''}
           />
+          {errors.firstName && (
+            <p className="error-message">{errors.firstName}</p>
+          )}
         </div>
 
         {/* Last Name Input */}
@@ -68,7 +117,11 @@ const AlpacaForm = () => {
             value={formData.lastName}
             onChange={handleInputChange}
             placeholder="Enter last name"
+            className={errors.lastName ? 'input-error' : ''}
           />
+          {errors.lastName && (
+            <p className="error-message">{errors.lastName}</p>
+          )}
         </div>
 
         {/* Street Address Input */}
@@ -141,3 +194,6 @@ const AlpacaForm = () => {
 };
 
 export default AlpacaForm;
+
+
+

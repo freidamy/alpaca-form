@@ -28,6 +28,16 @@
   border-radius: 4px;
 }
 
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
 .checkbox-group {
   display: flex;
   align-items: center;
@@ -52,5 +62,5 @@
 
 .form-summary p {
   margin-bottom: 5px;
-  color:black;
+  color: #000;
 }
